@@ -12,8 +12,8 @@ async function getAllSpecialities(req, res) {
     return res.json(data);
   } catch (e) {
     const err = {
-      statusCode: error.response?.status ?? 500,
-      message: error.response?.data?.message ?? "Ha ocurrido un error",
+      statusCode: e.response?.status ?? 500,
+      message: e.response?.data?.message ?? "Ha ocurrido un error",
     };
     return res.status(err.statusCode).json(err);
   }

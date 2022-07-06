@@ -1,37 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from './state';
-import createUser from './thunk';
+import { createUserThunk } from './thunk';
 
 const professional = createSlice({
     name: 'professinal',
     initialState : initialState,
+    reducers: {
+        RESET: () => initialState,
+      },
     extraReducers : {
-        [createUser.fulfilled] : (state, {payload}) => {
-            state.user = payload;
-            state.loding = false;
-            state.loaded = true;
+        [createUserThunk.fulfilled] : (state, {payload}) => {
+            state.user = {...state.user, ...payload};
+            state.user.loding = false;
+            state.user.loaded = true;
             state.error = null;
-            state.goTo = '/profesional/termino-datos'
+            state.user.goTo = '/profesional/termino-datos'
         },
-        [createUser.pending] : (state,{payload}) => {
-            state.loading = true;
-            state.loaded = false;
+        [createUserThunk.pending] : (state,{payload}) => {
+            state.user.loading = true;
+            state.user.loaded = false;
             state.error = null;
         },
-        [createUser.rejected]: (state,{error}) => {
+        [createUserThunk.rejected]: (state,{error}) => {
             state.error = error;
-            state.loding = false;
-            state.loaded = false;
-            state.goTo = '/'
-            state.queryError = {
-             message : 'Ops! hemos tenido un inconveniente creando a tu usuario',
-            }
-        } 
+            state.user.loding = false;
+            state.user.loaded = false;
+            state.user.goTo = '/'
+        },
     }
 });
+const { RESET } =  professional.actions;
+const selectToken = (state) => state.professional.token;
+const selectProfessional = (state) => state.professional;
 
-export { createUser };
-export const selectToken = (state) => state.professional.token;
-// selecciona del estado global de la app a profesional
-export const selectProfessional = (state) => state.professional;
+export { createUserThunk, RESET, selectToken, selectProfessional };
 export default professional.reducer;

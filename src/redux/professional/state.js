@@ -1,12 +1,14 @@
 const initialState = {
-    token : '',
     professional: {
         id: null,
         id_user: null,
         username: null,
         linkToConsultation: null,
         createdAt: null,
-        updatedAt: null
+        updatedAt: null,
+        loaded: null,
+        loading: null,
+        goTo: null
     },
     user : {
         id: null,
@@ -15,12 +17,11 @@ const initialState = {
         surnames: null,
         birthdate: null,
         createdAt: null,
-        updatedAt: null
+        updatedAt: null,
+        loaded: null,
+        loading: null,
+        goTo: null
     },
-    loaded: null,
-    loading: null,
     error: null,
-    goTo: null,
-    queryError: null,
 }
 export default initialState;

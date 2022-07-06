@@ -6,19 +6,12 @@ import axios from "axios";
  * @param {import('next').NextApiResponse} res
  * @returns
  */
-async function createUserHandler(req, res) {
+async function loginProfessional(req, res) {
   const { body, headers } = req;
-
   try {
-    const { data } = await axios.post(
-      `${process.env.BACKEND_URL}/user/create`,
-      body,
-      {
-        headers: {
-          ...headers,
-        },
-      }
-    );
+    const { data } = await axios.post(`${process.env.BACKEND_URL}/professional/login`, body , {
+        headers
+    });
     return res.json(data);
   } catch (e) {
     const err = {
@@ -31,12 +24,12 @@ async function createUserHandler(req, res) {
 
 const handler = (req, res) => {
   switch (req.method) {
-    case 'POST':
-      return createUserHandler(req, res);
+    case "POST":
+      return loginProfessional(req, res);
     default:
       return res.status(405).json({
         statusCode: 405,
-        message: 'Method Not Allowed',
+        message: "Method Not Allowed",
       });
   }
 };

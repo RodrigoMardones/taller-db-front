@@ -1,12 +1,12 @@
 import { useForm } from 'react-hook-form';
-import { createUser, selectProfessional  } from '../../redux/professional/reducer';
+import { createUserThunk, selectProfessional  } from '../../redux/professional/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 export default function FirstData() {
     const dispatch = useDispatch();
-    const {goTo, queryError } = useSelector(selectProfessional);
+    const { goTo, queryError } = useSelector(selectProfessional);
     const { push } = useRouter();
     const { register, handleSubmit } = useForm({
         defaultValues : {
@@ -17,7 +17,7 @@ export default function FirstData() {
         }
     })
     const onSubmit = async (data) => {
-        dispatch(createUser(data));
+        dispatch(createUserThunk(data));
     };
     useEffect(() => {
         push({

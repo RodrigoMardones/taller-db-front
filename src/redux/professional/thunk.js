@@ -1,16 +1,38 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import createUser from './api';
+import {createUser } from './api';
 
 const createUserThunk = createAsyncThunk(
     'professional/createUser',
     async (payload, {rejectWithValue, ..._rest}) => {
         try {
-            console.log("llegamos al thunk");
             const created = await createUser(payload);
             return created;
-        } catch(e) {
+        } catch(err) {
             return rejectWithValue([], err);
         }
     }
 )
-export default createUserThunk;
+const createProfesionalThunk = createAsyncThunk(
+    'professional/createProfessional',
+    async (payload, {rejectWithValue, getState }) => {
+        try {
+            const {
+                professional : {
+                    user,
+                    professional,
+                }
+            } = getState();
+            console.log(user);
+            console.log(professional);
+            console.log(payload);
+        } catch(err) {
+            return rejectWithValue([], err);
+        }
+    }
+)
+
+
+export  {
+    createUserThunk,
+    createProfesionalThunk,
+};

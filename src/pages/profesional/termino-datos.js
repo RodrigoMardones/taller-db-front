@@ -1,4 +1,6 @@
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 export async function getStaticProps() {
   const res = await fetch(`${process.env.FRONTEND_URL}/api/speciality/getAll`);
@@ -11,6 +13,9 @@ export async function getStaticProps() {
 }
 
 export default function FinalData({ specialities }) {
+  const dispatch = useDispatch();
+  const { push } = useRouter();
+
   const { register, handleSubmit } = useForm({
     defaultValues: {
         username: '',
@@ -19,8 +24,9 @@ export default function FinalData({ specialities }) {
         speciality: null
     }
   });
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+    dispatch();
   };
 
   return (
@@ -37,7 +43,11 @@ export default function FinalData({ specialities }) {
                 <label className="form-label">Especialidad </label>
                 <select {...register('speciality')}>
                   {
-                    specialities.map((speciality) => (<option value={speciality.id}>{speciality.name}</option>))
+                    specialities.map(
+                      (speciality) => (
+                        <option value={Number(speciality.value)}>{speciality.name}</option>
+                        )
+                      )
                   }
                 </select>
               </div>
