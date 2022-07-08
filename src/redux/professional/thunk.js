@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import {createUser } from './api';
+import {createUser, createProfessional } from './api';
 
 const createUserThunk = createAsyncThunk(
     'professional/createUser',
@@ -19,12 +19,18 @@ const createProfesionalThunk = createAsyncThunk(
             const {
                 professional : {
                     user,
-                    professional,
                 }
             } = getState();
-            console.log(user);
-            console.log(professional);
-            console.log(payload);
+            const { password, username, speciality } = payload;
+            const body = {
+                password,
+                username,
+                id_user : user.id,
+                id_speciality:  Number(speciality),
+                linkToConsultation: "http://linkToCall.url"
+            }
+            const res = await createProfessional(body, {'Content-Type' : 'application/json'});
+            return res; 
         } catch(err) {
             return rejectWithValue([], err);
         }

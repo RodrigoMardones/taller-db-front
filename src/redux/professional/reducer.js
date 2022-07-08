@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from './state';
-import { createUserThunk } from './thunk';
+import { createProfesionalThunk, createUserThunk } from './thunk';
 
 const professional = createSlice({
     name: 'professinal',
@@ -27,11 +27,24 @@ const professional = createSlice({
             state.user.loaded = false;
             state.user.goTo = '/'
         },
+        [createProfesionalThunk.fulfilled] : (state, {payload}) => {
+            state.professional = payload;
+            state.professional.loaded = true;
+            state.professional.loading = false;
+            state.professional.goTo = "/"
+        },
+        [createProfesionalThunk.pending] : (state, {payload}) => {
+            state.professional.loaded = true;
+            state.professional.loading = false;
+        },
+        [createProfesionalThunk.rejected] : (state, {error}) => {
+            state.error = error;
+        }
     }
 });
 const { RESET } =  professional.actions;
 const selectToken = (state) => state.professional.token;
 const selectProfessional = (state) => state.professional;
 
-export { createUserThunk, RESET, selectToken, selectProfessional };
+export { createProfesionalThunk, createUserThunk, RESET, selectToken, selectProfessional };
 export default professional.reducer;

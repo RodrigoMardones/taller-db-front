@@ -4,7 +4,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Provider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '../redux/store';
-
+import Footer from "../components/footer";
+import Layout from "../components/layout";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -17,7 +18,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <Component {...pageProps} />
+            <Component {...pageProps} />
         </PersistGate>
       </Provider>
     </>

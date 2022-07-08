@@ -1,39 +1,64 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutProfessionalThunk, RESET, selectLogin } from "../../redux/login/reducer";
-
+import {
+  logoutProfessionalThunk,
+  selectLogin,
+} from "../../redux/login/reducer";
+import TableSchedule from "../../components/tableSchedules";
 
 export default function Panel() {
   const dispatch = useDispatch();
-  const { token } = useSelector(selectLogin);
+  const { token, id_professional } = useSelector(selectLogin);
+  const [schedules, setSchedules] = useState([]);
   const [logout, setLogout] = useState(false);
   const { push } = useRouter();
-  const onClickLogout =  () => {
-    console.log("click!");
+  
+  const onClickLogout = () => {
     setLogout(true);
-  }
+  };
+
   useEffect(() => {
     (() => {
-      if(logout){
+      if (logout) {
         dispatch(logoutProfessionalThunk());
       }
-    })()
+    })();
   }, [logout]);
 
-  if(!token) {
-    push('/');
+  useEffect(() => {
+    const info = async () => {
+      const res = await fetch(
+        `${process.env.BACKEND_URL}/schedule/professional/${id_professional}`
+      );
+      const schedules = await res.json();
+      setSchedules(schedules);
+    };
+    info();
+  }, []);
+
+  const handlecreateSchedule = () => {
+    push('/profesional/crear-horario');
+  }
+  if (!token) {
+    push("/");
   }
   return (
     <>
       <nav className="navbar navbar-light bg-light">
         <div className="container">
-          <span className="navbar-text">
-            Professional
-          </span>
-          <button className="btn btn-primary" onClick={onClickLogout}>logout</button>
+          <span className="navbar-text">Profesional</span>
+          <button className="btn btn-primary" onClick={onClickLogout}>
+            logout
+          </button>
         </div>
       </nav>
+      <div className="container justify-content-center">
+        <div className="d-flex flex-row m-3">
+          <button className="btn btn-primary" onClick={handlecreateSchedule}> crear horario</button>
+        </div>
+      </div>
+      <TableSchedule schedules={schedules} />
     </>
   );
 }

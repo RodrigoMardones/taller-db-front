@@ -18,7 +18,6 @@ const logoutProfessionalThunk = createAsyncThunk(
     async (_payload, {rejectWithValue, getState, dispatch }) => {
         try {
             const { login: {token} } = getState();
-            console.log(token);
             await logoutProfessional({}, {'X-Session-Token' : token});
             dispatch(RESET());
 
